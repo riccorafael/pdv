@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplicação de PDV</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    .dark-mode {
+      background-color: #1f2937;
+      color: white;
+    }
+    .light-mode {
+      background-color: white;
+      color: black;
+    }
+  </style>
+</head>
+<body class="light-mode">
+  <div id="app" class="min-h-screen flex flex-col">
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 text-white flex justify-between items-center">
+      <h1 class="text-xl font-bold">PDV Moderno</h1>
+      <button id="toggle-theme" class="px-4 py-2 bg-blue-700 rounded">Modo Escuro</button>
+    </nav>
+
+    <!-- Sidebar -->
+    <div class="flex flex-grow">
+      <aside class="w-64 bg-gray-200 p-4">
+        <ul class="space-y-2">
+          <li><button class="block w-full p-2 bg-gray-300 rounded" onclick="changeSection('sales')">Vendas</button></li>
+          <li><button class="block w-full p-2 bg-gray-300 rounded" onclick="changeSection('products')">Produtos</button></li>
+          <li><button class="block w-full p-2 bg-gray-300 rounded" onclick="changeSection('customers')">Clientes</button></li>
+          <li><button class="block w-full p-2 bg-gray-300 rounded" onclick="changeSection('reports')">Relatórios</button></li>
+          <li><button class="block w-full p-2 bg-gray-300 rounded" onclick="changeSection('cashier')">Caixa</button></li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-grow p-4">
+        <section id="sales" class="hidden">
+          <h2 class="text-2xl font-bold mb-4">Registro de Vendas</h2>
+          <form id="sale-form" class="space-y-4">
+            <input type="text" placeholder="Código do Produto" class="w-full p-2 border rounded">
+            <select class="w-full p-2 border rounded">
+              <option>Forma de Pagamento</option>
+              <option>Dinheiro</option>
+              <option>Cartão</option>
+              <option>PIX</option>
+            </select>
+            <button type="submit" class="w-full p-2 bg-green-500 text-white rounded">Registrar Venda</button>
+          </form>
+        </section>
+
+        <section id="products" class="hidden">
+          <h2 class="text-2xl font-bold mb-4">Gerenciamento de Produtos</h2>
+          <form id="product-form" class="space-y-4">
+            <input type="text" placeholder="Nome do Produto" class="w-full p-2 border rounded">
+            <input type="number" placeholder="Preço" class="w-full p-2 border rounded">
+            <input type="number" placeholder="Quantidade em Estoque" class="w-full p-2 border rounded">
+            <button type="submit" class="w-full p-2 bg-blue-500 text-white rounded">Adicionar Produto</button>
+          </form>
+        </section>
+
+        <section id="customers" class="hidden">
+          <h2 class="text-2xl font-bold mb-4">Gerenciamento de Clientes</h2>
+          <form id="customer-form" class="space-y-4">
+            <input type="text" placeholder="Nome do Cliente" class="w-full p-2 border rounded">
+            <input type="email" placeholder="E-mail" class="w-full p-2 border rounded">
+            <button type="submit" class="w-full p-2 bg-purple-500 text-white rounded">Cadastrar Cliente</button>
+          </form>
+        </section>
+
+        <section id="reports" class="hidden">
+          <h2 class="text-2xl font-bold mb-4">Relatórios</h2>
+          <canvas id="sales-chart" width="400" height="200"></canvas>
+        </section>
+
+        <section id="cashier" class="hidden">
+          <h2 class="text-2xl font-bold mb-4">Controle de Caixa</h2>
+          <button class="w-full p-2 bg-red-500 text-white rounded">Fechar Caixa</button>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Toggle Theme
+    const toggleThemeButton = document.getElementById('toggle-theme');
+    let isDarkMode = false;
+    toggleThemeButton.addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      document.body.classList.toggle('light-mode');
+      isDarkMode = !isDarkMode;
+      toggleThemeButton.textContent = isDarkMode ? 'Modo Claro' : 'Modo Escuro';
+    });
+
+    // Change Sections
+    function changeSection(sectionId) {
+      document.querySelectorAll('section').forEach(section => section.classList.add('hidden'));
+      document.getElementById(sectionId).classList.remove('hidden');
+    }
+
+    // Initialize Chart
+    const ctx = document.getElementById('sales-chart').getContext('2d');
+    const salesChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['Janeiro', 'Fevereiro', 'Março', 'Abril'],
+        datasets: [{
+          label: 'Vendas Mensais',
+          data: [12000, 15000, 18000, 20000],
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          borderColor: 'rgba(75, 192, 192, 1)',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
+```
